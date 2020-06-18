@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   MenuItem,
   FormControl,
@@ -47,11 +47,18 @@ const BootstrapInput = withStyles((theme) => ({
     },
   },
 }))(InputBase);
-interface IDropdownProps {}
+interface IDropdownProps {
+  getPlayerSkill: (skill: string) => void;
+}
 
-const Dropdown = ({}: IDropdownProps) => {
+const Dropdown = ({ getPlayerSkill }: IDropdownProps) => {
   const classes = useStyles();
-  const [skill, setSkill] = React.useState("10");
+  const [skill, setSkill] = React.useState("Bat");
+
+  useEffect(() => {
+    getPlayerSkill(skill);
+  }, [skill]);
+
   const handleChange = (event: any) => {
     setSkill(event.target.value);
   };
@@ -68,8 +75,8 @@ const Dropdown = ({}: IDropdownProps) => {
           onChange={handleChange}
           input={<BootstrapInput />}
         >
-          <MenuItem value={10}>Bat</MenuItem>
-          <MenuItem value={20}>Bowl</MenuItem>
+          <MenuItem value={"Bat"}>Bat</MenuItem>
+          <MenuItem value={"Bowl"}>Bowl</MenuItem>
         </Select>
       </FormControl>
     </React.Fragment>

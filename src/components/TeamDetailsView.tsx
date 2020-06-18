@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import React, { useState, useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
 import { List } from "@material-ui/core";
@@ -54,18 +54,86 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface ITeamDetailsViewProps {}
+interface ITeamDetailsViewProps {
+  getMatchDetails: (data: object) => void;
+}
 
-const TeamDetailsView = ({}: ITeamDetailsViewProps) => {
+let firstTeamArray: any[] = [];
+let secondTeamArray: any[] = [];
+
+const TeamDetailsView = ({ getMatchDetails }: ITeamDetailsViewProps) => {
   const classes = useStyles();
-  const [teamNameA, setTeamNameA] = useState("");
-  const [teamNameB, setTeamNameB] = useState("");
-  const [playerListA, setPlayerListA] = useState([]);
-  const [playerListB, setPlayerListB] = useState([]);
+  const [firstTeamName, setFirstTeamName] = useState("");
+  const [secondTeamName, setSecondTeamName] = useState("");
+  const [error, setError] = useState("");
+
+  const [firstTeamPlayerList, setFirstTeamPlayerList] = useState({} as any);
+  const [secondTeamPlayerList, setSecondTeamPlayerList] = useState({} as any);
+
+  useEffect(() => {
+    //do something
+    console.log("useEffect");
+  }, [firstTeamPlayerList, secondTeamPlayerList]);
 
   const getTeamName = (data: any) => {
     console.log("data", data);
     if (data.id === "firstTeam") {
+      setFirstTeamName(data.teamName);
+    }
+    if (data.id === "secondTeam") {
+      setSecondTeamName(data.teamName);
+    }
+  };
+
+  function getPlayerDetails(data: any) {
+    console.log("getPlayerDetails", data);
+    const id = Date.now();
+    if (data.id === "firstTeam") {
+      let player = {
+        id,
+        playerName: data.playerName,
+        playerSkill: data.playerSkill,
+      };
+      if (firstTeamArray.length < 11) {
+        firstTeamArray.push(player);
+        setFirstTeamPlayerList({
+          firstTeamArray,
+        });
+      } else {
+        setError("Error: Cannot add more players");
+      }
+    }
+    if (data.id === "secondTeam") {
+      const player = {
+        id,
+        playerName: data.playerName,
+        playerSkill: data.playerSkill,
+      };
+      if (secondTeamArray.length < 11) {
+        secondTeamArray.push(player);
+        setSecondTeamPlayerList({
+          secondTeamArray,
+        });
+      } else {
+        setError("Error: Cannot add more players");
+      }
+      console.log("secondTeamArray", secondTeamArray);
+      console.log("secondTeamPlayerList", secondTeamPlayerList);
+    }
+  }
+
+  const startMatchButtonHandler = () => {
+    if (
+      firstTeamArray.length === 11 &&
+      secondTeamArray.length === 11 &&
+      firstTeamName !== "" &&
+      secondTeamName !== ""
+    ) {
+      const data = {
+        [firstTeamName]: { firstTeamPlayerList },
+        [secondTeamName]: { secondTeamPlayerList },
+      };
+      getMatchDetails(data);
     }
   };
 
@@ -79,53 +147,21 @@ const TeamDetailsView = ({}: ITeamDetailsViewProps) => {
             <form className={classes.form} noValidate>
               <TeamNameTextField id="firstTeam" getTeamName={getTeamName} />
               <div>
-                <AddPlayer />
+                {error ? error : null}
+                <AddPlayer id="firstTeam" getPlayerDetails={getPlayerDetails} />
                 <div>
                   <List component="div">
-                    <PlayerListItem
-                      playerName={"Virat Kohli"}
-                      playerSkill={"Bat"}
-                    />
-                    <PlayerListItem
-                      playerName={"Virat Kohli"}
-                      playerSkill={"Bat"}
-                    />
-                    <PlayerListItem
-                      playerName={"Virat Kohli"}
-                      playerSkill={"Bat"}
-                    />
-                    <PlayerListItem
-                      playerName={"Virat Kohli"}
-                      playerSkill={"Bat"}
-                    />
-                    <PlayerListItem
-                      playerName={"Virat Kohli"}
-                      playerSkill={"Bat"}
-                    />
-                    <PlayerListItem
-                      playerName={"Virat Kohli"}
-                      playerSkill={"Bat"}
-                    />
-                    <PlayerListItem
-                      playerName={"Virat Kohli"}
-                      playerSkill={"Bat"}
-                    />
-                    <PlayerListItem
-                      playerName={"Virat Kohli"}
-                      playerSkill={"Bat"}
-                    />
-                    <PlayerListItem
-                      playerName={"Virat Kohli"}
-                      playerSkill={"Bat"}
-                    />
-                    <PlayerListItem
-                      playerName={"Virat Kohli"}
-                      playerSkill={"Bat"}
-                    />
-                    <PlayerListItem
-                      playerName={"Virat Kohli"}
-                      playerSkill={"Bat"}
-                    />
+                    {firstTeamPlayerList &&
+                      firstTeamPlayerList.firstTeamArray &&
+                      Object.values(
+                        firstTeamPlayerList.firstTeamArray
+                      ).map((player: any) => (
+                        <PlayerListItem
+                          key={player.id}
+                          playerName={player.playerName}
+                          playerSkill={player.playerSkill}
+                        />
+                      ))}
                   </List>
                 </div>
               </div>
@@ -138,53 +174,23 @@ const TeamDetailsView = ({}: ITeamDetailsViewProps) => {
             <form className={classes.form} noValidate>
               <TeamNameTextField id="secondTeam" getTeamName={getTeamName} />
               <div>
-                <AddPlayer />
+                <AddPlayer
+                  id="secondTeam"
+                  getPlayerDetails={getPlayerDetails}
+                />
                 <div>
                   <List component="div">
-                    <PlayerListItem
-                      playerName={"Virat Kohli"}
-                      playerSkill={"Bat"}
-                    />
-                    <PlayerListItem
-                      playerName={"Virat Kohli"}
-                      playerSkill={"Bat"}
-                    />
-                    <PlayerListItem
-                      playerName={"Virat Kohli"}
-                      playerSkill={"Bat"}
-                    />
-                    <PlayerListItem
-                      playerName={"Virat Kohli"}
-                      playerSkill={"Bat"}
-                    />
-                    <PlayerListItem
-                      playerName={"Virat Kohli"}
-                      playerSkill={"Bat"}
-                    />
-                    <PlayerListItem
-                      playerName={"Virat Kohli"}
-                      playerSkill={"Bat"}
-                    />
-                    <PlayerListItem
-                      playerName={"Virat Kohli"}
-                      playerSkill={"Bat"}
-                    />
-                    <PlayerListItem
-                      playerName={"Virat Kohli"}
-                      playerSkill={"Bat"}
-                    />
-                    <PlayerListItem
-                      playerName={"Virat Kohli"}
-                      playerSkill={"Bat"}
-                    />
-                    <PlayerListItem
-                      playerName={"Virat Kohli"}
-                      playerSkill={"Bat"}
-                    />
-                    <PlayerListItem
-                      playerName={"Virat Kohli"}
-                      playerSkill={"Bat"}
-                    />
+                    {secondTeamPlayerList &&
+                      secondTeamPlayerList.secondTeamArray &&
+                      Object.values(
+                        secondTeamPlayerList.secondTeamArray
+                      ).map((player: any) => (
+                        <PlayerListItem
+                          key={player.id}
+                          playerName={player.playerName}
+                          playerSkill={player.playerSkill}
+                        />
+                      ))}
                   </List>
                 </div>
               </div>
@@ -196,6 +202,7 @@ const TeamDetailsView = ({}: ITeamDetailsViewProps) => {
         variantValue="contained"
         styleName={classes.button}
         displayName={"Start Match"}
+        onButtonClick={startMatchButtonHandler}
       />
     </React.Fragment>
   );

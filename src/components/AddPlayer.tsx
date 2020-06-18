@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Dropdown from "./Dropdown";
 import ButtonUI from "../components/ButtonUI";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import InputBase from "@material-ui/core/InputBase";
+import { InputAdornment, Input } from "@material-ui/core";
+import AccountCircle from "@material-ui/icons/AccountCircle";
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -16,57 +18,65 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BootstrapInput = withStyles((theme) => ({
-  root: {
-    "label + &": {
-      marginTop: theme.spacing(3),
-    },
-  },
-  input: {
-    borderRadius: 4,
-    position: "relative",
-    backgroundColor: theme.palette.background.paper,
-    border: "1px solid #ced4da",
-    fontSize: 16,
-    padding: "10px 26px 10px 12px",
-    transition: theme.transitions.create(["border-color", "box-shadow"]),
-    // Use the system font instead of the default Roboto font.
-    fontFamily: [
-      "-apple-system",
-      "BlinkMacSystemFont",
-      '"Segoe UI"',
-      "Roboto",
-      '"Helvetica Neue"',
-      "Arial",
-      "sans-serif",
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(","),
-    "&:focus": {
-      borderRadius: 4,
-      borderColor: "#80bdff",
-      boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",
-    },
-  },
-}))(InputBase);
-
-interface IAddPlayerProps {}
-const AddPlayer = ({}: IAddPlayerProps) => {
+interface IAddPlayerProps {
+  getPlayerDetails: (data: object) => void;
+  id: string;
+}
+const AddPlayer = ({ getPlayerDetails, id }: IAddPlayerProps) => {
   const classes = useStyles();
+  const [playerName, setPlayerName] = useState("");
+  const [playerSkill, setPlayerSkill] = useState("");
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
+  useEffect(() => {
+    if (playerName === "") {
+      setIsButtonDisabled(true);
+    }
+  }, [playerName]);
+
+  const onChangeInputHandler = (e: any) => {
+    setPlayerName(e.target.value);
+    setIsButtonDisabled(false);
+  };
+
+  const getPlayerSkill = (skill: string) => {
+    setPlayerSkill(skill);
+  };
+
+  function addButtonHandler() {
+    const data = {
+      id,
+      playerName,
+      playerSkill,
+    };
+    getPlayerDetails(data);
+    setPlayerName("");
+  }
+
   return (
     <div>
       <FormControl className={classes.margin}>
         <InputLabel shrink htmlFor="demo-customized-textbox">
           Enter Player Name
         </InputLabel>
-        <BootstrapInput id="demo-customized-textbox" />
+        <Input
+          id="input-with-icon-adornment"
+          startAdornment={
+            <InputAdornment position="start">
+              <AccountCircle />
+            </InputAdornment>
+          }
+          value={playerName}
+          onChange={onChangeInputHandler}
+        />
       </FormControl>
-      <Dropdown />
+      <Dropdown getPlayerSkill={getPlayerSkill} />
       <ButtonUI
         variantValue="outlined"
         styleName={classes.mgt_24}
         displayName={"Add"}
+        onButtonClick={addButtonHandler}
+        isDisabled={isButtonDisabled}
       />
     </div>
   );
