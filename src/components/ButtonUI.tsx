@@ -1,13 +1,6 @@
 import React from "react";
 import { Button } from "@material-ui/core";
-
-interface IButtonUIProps {
-  styleName?: string;
-  variantValue?: "text" | "outlined" | "contained" | undefined;
-  displayName: string;
-  onButtonClick: () => void;
-  isDisabled?: boolean;
-}
+import { IButtonUIProps } from "../Interfaces/index";
 
 const ButtonUI = ({
   styleName,

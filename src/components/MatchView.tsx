@@ -2,13 +2,7 @@ import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import styled from "@emotion/styled";
 import { ButtonUI } from "../components/index";
-
-interface IMatchViewProps {
-  matchData: any;
-  updatedOverProgressData: (data: any) => void;
-  history: any;
-  getMatchDetails: (data: any) => void;
-}
+import { IMatchViewProps } from "../Interfaces/index";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -29,6 +23,7 @@ const MatchView = ({
   getMatchDetails,
 }: IMatchViewProps) => {
   const classes = useStyles();
+  console.log("matchData", matchData);
 
   const Container = styled.div`
     background-color: black;
@@ -238,12 +233,12 @@ const MatchView = ({
               matchData[currentInning] &&
               matchData[currentInning].ballsRemaining}
           </h3>
-          <h2>
+          {/* <h2>
             NRR:{" "}
             {matchData &&
               matchData[currentInning] &&
               matchData[currentInning].netRunrate}
-          </h2>
+          </h2> */}
         </div>
         {currentBallOutcome.map((ball: string, index: number) =>
           getCurrentBallOutcomeUI(ball, index)

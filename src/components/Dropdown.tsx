@@ -1,22 +1,13 @@
 import React, { useEffect } from "react";
-import {
-  MenuItem,
-  FormControl,
-  Select,
-  InputLabel,
-  InputBase,
-} from "@material-ui/core";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { MenuItem, FormControl, Select, InputLabel } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { IDropdownProps } from "../Interfaces/index";
 
 const useStyles = makeStyles((theme) => ({
   margin: {
     margin: theme.spacing(1),
   },
 }));
-
-interface IDropdownProps {
-  getPlayerSkill: (skill: string) => void;
-}
 
 const Dropdown = ({ getPlayerSkill }: IDropdownProps) => {
   const classes = useStyles();

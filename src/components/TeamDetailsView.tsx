@@ -13,6 +13,7 @@ import {
   getBatsmanOnPitch,
   getCurrentBowler,
 } from "../Utils/index";
+import { ITeamDetailsViewProps } from "../Interfaces/index";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -59,11 +60,6 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
-
-interface ITeamDetailsViewProps {
-  getMatchDetails: (data: object) => void;
-  history: any;
-}
 
 let firstTeamArray: any[] = [];
 let secondTeamArray: any[] = [];
@@ -125,8 +121,8 @@ const TeamDetailsView = ({
 
   const onStartMatchButtonHandler = () => {
     if (
-      firstTeamArray.length === 3 &&
-      secondTeamArray.length === 3 &&
+      firstTeamArray.length === 11 &&
+      secondTeamArray.length === 11 &&
       firstTeamName !== "" &&
       secondTeamName !== ""
     ) {

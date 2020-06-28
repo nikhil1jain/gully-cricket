@@ -7,15 +7,7 @@ import {
   updatedOverProgressDataAction,
   setUpdatedMatchDataAction,
 } from "../Actions/index";
-
-interface IConnectedMatchDashboardProps {
-  getCurrentMatchDetailDispatch: () => void;
-  currentMatchId: string;
-  matchData: any;
-  updatedOverProgressDataDispatch: (data: any) => void;
-  history: object;
-  setUpdateMatchDataDispatch: (data: any) => void;
-}
+import { IConnectedMatchDashboardProps } from "../Interfaces/index.js";
 
 const ConnectedMatchDashboard = ({
   getCurrentMatchDetailDispatch,

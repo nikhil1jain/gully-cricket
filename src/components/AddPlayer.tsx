@@ -8,6 +8,7 @@ import {
   InputLabel,
 } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import { IAddPlayerProps } from "../Interfaces/index";
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -19,10 +20,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface IAddPlayerProps {
-  getPlayerDetails: (data: object) => void;
-  id: string;
-}
 const AddPlayer = ({ getPlayerDetails, id }: IAddPlayerProps) => {
   const classes = useStyles();
   const [playerName, setPlayerName] = useState("");

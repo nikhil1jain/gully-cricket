@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { makeStyles } from "@material-ui/core/styles";
+import { IMatchResultViewProps } from "../Interfaces/index";
 
 import {
   BattingScoreCard,
   BowlingScoreCard,
   ButtonUI,
 } from "../components/index";
-
-interface IMatchResultViewProps {
-  matchData: any;
-}
 
 const useStyles = makeStyles((theme) => ({
   button: {

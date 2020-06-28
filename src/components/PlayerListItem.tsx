@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { ListItem } from "@material-ui/core";
+import { IPlayerListItemProps } from "../Interfaces/index";
 
 const useStyles = makeStyles(() => ({
   list_item: {
@@ -14,10 +15,6 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-interface IPlayerListItemProps {
-  playerName: string;
-  playerSkill: string;
-}
 const PlayerListItem = ({ playerName, playerSkill }: IPlayerListItemProps) => {
   const classes = useStyles();
   return (

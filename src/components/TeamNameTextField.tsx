@@ -1,10 +1,7 @@
 import React from "react";
 import { TextField } from "@material-ui/core";
+import { ITeamNameTextFieldProps } from "../Interfaces/index";
 
-interface ITeamNameTextFieldProps {
-  getTeamName: (data: object) => void;
-  id: string;
-}
 const TeamNameTextField = ({ getTeamName, id }: ITeamNameTextFieldProps) => {
   const teamNameInputHandler = (e: any) => {
     const data = { id: id, teamName: e.target.value };

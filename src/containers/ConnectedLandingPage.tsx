@@ -2,17 +2,13 @@ import React from "react";
 import { TeamDetailsView } from "../components/index";
 import { connect } from "react-redux";
 import { setMatchDataAction } from "../Actions/index";
-
-interface IConnectedLandingPageProps {
-  setMatchDataDispatch: (data: object) => void;
-  history: object;
-}
+import { IConnectedLandingPageProps } from "../Interfaces/index";
 
 const ConnectedLandingPage = ({
   setMatchDataDispatch,
   history,
 }: IConnectedLandingPageProps) => {
-  function getMatchDetails(data: any) {
+  function getMatchDetails(data: object) {
     setMatchDataDispatch(data);
   }
 

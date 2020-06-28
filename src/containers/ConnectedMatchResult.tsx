@@ -3,13 +3,7 @@ import { connect } from "react-redux";
 import { MatchResultView } from "../components/index";
 import { selectMatchData, selectCurrentMatchId } from "../Selectors/index";
 import { getCurrentMatchDetailsAction } from "../Actions/index";
-
-interface IConnectedMatchResultProps {
-  matchData: any;
-  history: object;
-  currentMatchId: any;
-  getCurrentMatchDetailDispatch: () => void;
-}
+import { IConnectedMatchResultProps } from "../Interfaces/index";
 
 const ConnectedMatchResult = ({
   matchData,
