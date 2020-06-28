@@ -1,8 +1,8 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
+import { Button } from "@material-ui/core";
 
 interface IButtonUIProps {
-  styleName: string;
+  styleName?: string;
   variantValue?: "text" | "outlined" | "contained" | undefined;
   displayName: string;
   onButtonClick: () => void;
@@ -16,7 +16,7 @@ const ButtonUI = ({
   onButtonClick,
   isDisabled,
 }: IButtonUIProps) => {
-  const handleButtonClick = () => {
+  const onButtonClickHandler = () => {
     onButtonClick();
   };
   return (
@@ -24,7 +24,7 @@ const ButtonUI = ({
       <Button
         variant={variantValue}
         className={styleName}
-        onClick={handleButtonClick}
+        onClick={onButtonClickHandler}
         disabled={isDisabled}
       >
         {displayName}

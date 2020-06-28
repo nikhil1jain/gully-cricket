@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import landingPageReducer from "./LandingPageReducer";
+import matchDashboardReducer from "./MatchDashboardReducers";
 
 const rootReducer = combineReducers({
-  landingPage: landingPageReducer,
+  match: matchDashboardReducer,
 });
 
 export default rootReducer;

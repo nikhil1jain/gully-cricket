@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Dropdown from "./Dropdown";
-import ButtonUI from "../components/ButtonUI";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import InputBase from "@material-ui/core/InputBase";
-import { InputAdornment, Input } from "@material-ui/core";
+import { ButtonUI, Dropdown } from "../components/index";
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  InputAdornment,
+  Input,
+  FormControl,
+  InputLabel,
+} from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 
 const useStyles = makeStyles((theme) => ({
@@ -43,7 +44,7 @@ const AddPlayer = ({ getPlayerDetails, id }: IAddPlayerProps) => {
     setPlayerSkill(skill);
   };
 
-  function addButtonHandler() {
+  function onAddButtonHandler() {
     const data = {
       id,
       playerName,
@@ -75,7 +76,7 @@ const AddPlayer = ({ getPlayerDetails, id }: IAddPlayerProps) => {
         variantValue="outlined"
         styleName={classes.mgt_24}
         displayName={"Add"}
-        onButtonClick={addButtonHandler}
+        onButtonClick={onAddButtonHandler}
         isDisabled={isButtonDisabled}
       />
     </div>

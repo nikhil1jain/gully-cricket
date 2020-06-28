@@ -1,14 +1,7 @@
-import { SET_MATCH_DATA_SUCCESS } from "../Constants/index";
-
-const initialState = {
-  matchData: {},
-};
+let initialState = {};
 
 const landingPageReducer = (state = initialState, action: any) => {
   switch (action.type) {
-    case SET_MATCH_DATA_SUCCESS:
-      state.matchData = { ...action.payload };
-      break;
     default:
       return {
         ...state,

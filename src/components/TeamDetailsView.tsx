@@ -1,12 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Grid from "@material-ui/core/Grid";
-import { List } from "@material-ui/core";
-import ButtonUI from "../components/ButtonUI";
-import PlayerListItem from "./PlayerListItem";
-import TeamNameTextField from "./TeamNameTextField";
-import AddPlayer from "./AddPlayer";
+import { List, CssBaseline, Grid } from "@material-ui/core";
+import {
+  ButtonUI,
+  PlayerListItem,
+  TeamNameTextField,
+  AddPlayer,
+} from "../components/index";
+import {
+  getBattingLineUp,
+  getBowlingLineUp,
+  getBatsmanOnPitch,
+  getCurrentBowler,
+} from "../Utils/index";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -56,12 +62,16 @@ const useStyles = makeStyles((theme) => ({
 
 interface ITeamDetailsViewProps {
   getMatchDetails: (data: object) => void;
+  history: any;
 }
 
 let firstTeamArray: any[] = [];
 let secondTeamArray: any[] = [];
 
-const TeamDetailsView = ({ getMatchDetails }: ITeamDetailsViewProps) => {
+const TeamDetailsView = ({
+  getMatchDetails,
+  history,
+}: ITeamDetailsViewProps) => {
   const classes = useStyles();
   const [firstTeamName, setFirstTeamName] = useState("");
   const [secondTeamName, setSecondTeamName] = useState("");
@@ -70,13 +80,7 @@ const TeamDetailsView = ({ getMatchDetails }: ITeamDetailsViewProps) => {
   const [firstTeamPlayerList, setFirstTeamPlayerList] = useState({} as any);
   const [secondTeamPlayerList, setSecondTeamPlayerList] = useState({} as any);
 
-  useEffect(() => {
-    //do something
-    console.log("useEffect");
-  }, [firstTeamPlayerList, secondTeamPlayerList]);
-
   const getTeamName = (data: any) => {
-    console.log("data", data);
     if (data.id === "firstTeam") {
       setFirstTeamName(data.teamName);
     }
@@ -86,7 +90,6 @@ const TeamDetailsView = ({ getMatchDetails }: ITeamDetailsViewProps) => {
   };
 
   function getPlayerDetails(data: any) {
-    console.log("getPlayerDetails", data);
     const id = Date.now();
     if (data.id === "firstTeam") {
       let player = {
@@ -117,23 +120,64 @@ const TeamDetailsView = ({ getMatchDetails }: ITeamDetailsViewProps) => {
       } else {
         setError("Error: Cannot add more players");
       }
-      console.log("secondTeamArray", secondTeamArray);
-      console.log("secondTeamPlayerList", secondTeamPlayerList);
     }
   }
 
-  const startMatchButtonHandler = () => {
+  const onStartMatchButtonHandler = () => {
     if (
-      firstTeamArray.length === 11 &&
-      secondTeamArray.length === 11 &&
+      firstTeamArray.length === 3 &&
+      secondTeamArray.length === 3 &&
       firstTeamName !== "" &&
       secondTeamName !== ""
     ) {
-      const data = {
-        [firstTeamName]: { firstTeamPlayerList },
-        [secondTeamName]: { secondTeamPlayerList },
+      const teams: object = {
+        firstTeam: {
+          teamName: firstTeamName,
+          playerList: firstTeamPlayerList.firstTeamArray,
+        },
+        secondTeam: {
+          teamName: secondTeamName,
+          playerList: secondTeamPlayerList.secondTeamArray,
+        },
       };
+
+      const firstInning = {
+        score: 0,
+        overs: 0.0, //10 overs
+        balls: 0, //60 balls
+        wickets: 0,
+        netRunrate: 0,
+        currentOver: 0,
+        totalOver: 20,
+        ballsRemaining: 120,
+        currentBowler: getCurrentBowler(secondTeamPlayerList.secondTeamArray),
+        batsmanOnPitch: getBatsmanOnPitch(firstTeamPlayerList.firstTeamArray),
+        battingLineUp: getBattingLineUp(firstTeamPlayerList.firstTeamArray),
+        bowlingLineUp: getBowlingLineUp(secondTeamPlayerList.secondTeamArray),
+      };
+      const secondInning = {
+        score: 0,
+        overs: 0.0, //10 overs
+        balls: 0, //60 balls
+        wickets: 0,
+        netRunrate: 0,
+        currentOver: 0,
+        totalOver: 20,
+        ballsRemaining: 120,
+        currentBowler: getCurrentBowler(firstTeamPlayerList.firstTeamArray),
+        batsmanOnPitch: getBatsmanOnPitch(secondTeamPlayerList.secondTeamArray),
+        battingLineUp: getBattingLineUp(secondTeamPlayerList.secondTeamArray),
+        bowlingLineUp: getBowlingLineUp(firstTeamPlayerList.firstTeamArray),
+      };
+      const data = {
+        teams,
+        firstInning,
+        secondInning,
+        currentInning: "firstInning",
+      };
+
       getMatchDetails(data);
+      history.push("/matchDashboard");
     }
   };
 
@@ -202,7 +246,7 @@ const TeamDetailsView = ({ getMatchDetails }: ITeamDetailsViewProps) => {
         variantValue="contained"
         styleName={classes.button}
         displayName={"Start Match"}
-        onButtonClick={startMatchButtonHandler}
+        onButtonClick={onStartMatchButtonHandler}
       />
     </React.Fragment>
   );
